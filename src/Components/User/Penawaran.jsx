@@ -7,11 +7,10 @@ function Penawaran() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getAllPenawaran())
-  }, [])
+  }, [dispatch])
 
   const { allEntity } = useSelector((state) => state.penawaran)
 
-  console.log(allEntity, 'xxx')
   return (
     <div id="penawaran" className="desktop3:px-[11%] desktop:px-[7%]  desktop2:px-[7%] py-[1.5%] mt-[1.5%] mb-[4%] phone:px-[5%] tablet:px-[5%] laptop:px-[8%]">
       <div className="flex items-center mb-[2rem]">

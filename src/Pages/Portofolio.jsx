@@ -7,7 +7,7 @@ function Portofolio() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getAllPortofolio())
-  }, [])
+  }, [dispatch])
 
   const { allEntity } = useSelector((state) => state.portofolio)
   return (

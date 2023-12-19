@@ -71,7 +71,7 @@ function Portofolio() {
 
   useEffect(() => {
     dispatch(getAllPortofolio())
-  }, [])
+  }, [dispatch])
 
   const { allEntity } = useSelector((state) => state.portofolio)
 
@@ -92,6 +92,7 @@ function Portofolio() {
 
   const onAddData = async (data) => {
     try {
+      setLoading(true)
       await dispatch(postEntity(data.nama_portofolio, data.gambar[0]))
       reset()
       toast.success('Add Data Successfully')

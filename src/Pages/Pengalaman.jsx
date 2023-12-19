@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import TitlePage from '../Components/TitlePage'
-import Rumah from '.././Images/IMG-8172.JPG'
 import CardPengalaman from '../Components/CardPengalaman'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllPengalaman } from '../Redux/Pengalaman/action'
@@ -9,7 +8,7 @@ function Pengalaman() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(getAllPengalaman())
-  }, [])
+  }, [dispatch])
 
   const { allEntity } = useSelector((state) => state.pengalaman)
 

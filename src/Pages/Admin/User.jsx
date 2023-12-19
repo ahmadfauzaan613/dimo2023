@@ -22,7 +22,7 @@ function User() {
 
   useEffect(() => {
     dispatch(getAllUser())
-  }, [])
+  }, [dispatch])
 
   const { allEntity } = useSelector((state) => state.pengguna)
 
@@ -116,6 +116,7 @@ function User() {
 
   const onUpdate = async (data) => {
     try {
+      setLoading(true)
       await dispatch(updateEntity(dataObj.id, data.newFullName, data.newUsername, data.newPassword))
       reset()
       toast.success('Update Data Successfully')

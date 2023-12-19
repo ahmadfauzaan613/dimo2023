@@ -23,7 +23,7 @@ function Penawaran() {
 
   useEffect(() => {
     dispatch(getAllPenawaran())
-  }, [])
+  }, [dispatch])
 
   const { allEntity } = useSelector((state) => state.penawaran)
 
@@ -94,6 +94,7 @@ function Penawaran() {
 
   const HandledeleteData = async () => {
     try {
+      setLoading(true)
       await dispatch(deleteEntity(dataObj.id))
       toast.success('Successfully Delete Data')
       setmodalDeleteData(!modalDeleteData)

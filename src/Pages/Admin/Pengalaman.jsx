@@ -22,7 +22,7 @@ function Pengalaman() {
 
   useEffect(() => {
     dispatch(getAllPengalaman())
-  }, [])
+  }, [dispatch])
 
   const { allEntity } = useSelector((state) => state.pengalaman)
 
@@ -82,6 +82,7 @@ function Pengalaman() {
 
   const onAddData = async (data) => {
     try {
+      setLoading(true)
       await dispatch(postEntity(data.nama_rumah, data.project_value, data.gambar[0]))
       reset()
       toast.success('Add Data Successfully')
