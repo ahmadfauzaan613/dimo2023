@@ -1,0 +1,9 @@
+/admin                   /admin                           200
+/admin/dashboard         /admin/dashboard                 200
+/admin/penawaran         /admin/penawaran                 200
+/admin/pengalaman        /admin/pengalaman                200
+/admin/portofolio        /admin/portofolio                200
+/admin/user              /admin/user                      200
+/pengalaman              /pengalaman                      200
+/portofolio              /portofolio                      200
+/struktur-organisasi     /struktur-organisasi             200
