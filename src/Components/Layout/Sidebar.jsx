@@ -23,9 +23,9 @@ function Sidebar() {
       <Menu menuname={'Pengalaman'} icon={'engineering'} link={'/admin/pengalaman'} active={location === '/admin/pengalaman' && true} />
       <Menu menuname={'Portofolio'} icon={'article'} link={'/admin/portofolio'} active={location === '/admin/portofolio' && true} />
       <Menu menuname={'User'} icon={'person'} link={'/admin/user'} active={location === '/admin/user' && true} />
-      <div className="absolute bottom-2">
+{/*       <div className="absolute bottom-2">
         <Menu menuname={'Back To Website'} icon={'logout'} link={''} />
-      </div>
+      </div> */}
     </div>
   )
 }
