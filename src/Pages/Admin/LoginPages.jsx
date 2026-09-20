@@ -33,7 +33,7 @@ function LoginPages() {
           <img className="admin-login-logo" src={Logo} alt="Logo PT Telaga Selat Samudra" />
           <p className="section-index">Panel internal</p>
           <h2>Masuk ke dashboard</h2>
-          <p className="admin-login-intro">Gunakan akun yang telah diberikan administrator.</p>
+          <p className="admin-login-intro">Mode dummy: masuk dengan username <strong>admin</strong> dan kata sandi <strong>admin</strong>.</p>
           {error && <p className="form-error" role="alert">{error}</p>}
           <form onSubmit={handleSubmit(onSubmit)} noValidate>
             <label htmlFor="username">Username</label>

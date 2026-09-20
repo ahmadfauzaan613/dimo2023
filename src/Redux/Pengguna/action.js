@@ -1,142 +1,26 @@
-import axios from 'axios'
+import { createItem, deleteItem, getCollection, updateItem } from '../../Data/dummyApi'
 
 export const RESET_FORM = 'RESET_FORM'
 const scope = 'pengguna'
 
-export const setLoading = (loading) => {
-  return {
-    type: `${scope}/SET_LOADING`,
-    payload: loading,
-  }
+export const setLoading = (payload) => ({ type: `${scope}/SET_LOADING`, payload })
+export const allEntity = (payload) => ({ type: `${scope}/ALL_ENTITY`, payload })
+export const setEntity = (payload) => ({ type: `${scope}/SET_ENTITY`, payload })
+export const resetForm = () => ({ type: `${scope}/${RESET_FORM}` })
+
+export const getAllUser = () => async (dispatch) => {
+  dispatch(allEntity(await getCollection(scope)))
+}
+export const postEntity = (full_name, username, password, role) => async (dispatch) => {
+  dispatch(setEntity(await createItem(scope, { full_name, username, password, role })))
 }
 
-export const allEntity = (allEntity) => {
-  return {
-    type: `${scope}/ALL_ENTITY`,
-    payload: allEntity,
-  }
+export const deleteEntity = (id) => async (dispatch) => {
+  dispatch(setEntity(await deleteItem(scope, id)))
 }
 
-export const setEntity = (entity) => {
-  return {
-    type: `${scope}/SET_ENTITY`,
-    payload: entity,
-  }
-}
-
-export const resetForm = () => ({
-  type: `${scope}/${RESET_FORM}`,
-})
-
-const apiurl = import.meta.env.VITE_API_URL
-
-export const getAllUser = () => {
-  return async (dispatch) => {
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        console.error('Token is not available.')
-        dispatch(setLoading(false))
-        return
-      }
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-      const res = await axios.get(`${apiurl}/user`, config)
-      const dataUser = res.data.data
-      dispatch(allEntity(dataUser))
-      dispatch(setLoading(false))
-    } catch (error) {
-      dispatch(setLoading(false))
-      console.error('Error fetching penawaran data:', error)
-    }
-  }
-}
-export const postEntity = (full_name, username, password, role) => {
-  return async (dispatch) => {
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        console.error('Token is not available.')
-        dispatch(setLoading(false))
-        return
-      }
-
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-
-      const response = await axios.post(`${apiurl}/user`, { full_name, username, password, role }, config)
-
-      const postEntity = response.data
-      dispatch(setEntity(postEntity))
-      dispatch(setLoading(false))
-    } catch (error) {
-      throw new Error(error.response)
-    }
-  }
-}
-
-export const deleteEntity = (id) => {
-  return async (dispatch) => {
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        console.error('Token is not available.')
-        dispatch(setLoading(false))
-        return
-      }
-
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-
-      const response = await axios.delete(`${apiurl}/user/${id}`, config)
-      const userDelete = response.data
-      dispatch(setEntity(userDelete))
-      dispatch(setLoading(false))
-    } catch (error) {
-      throw new Error(error.response.data)
-    }
-  }
-}
-
-export const updateEntity = (id, newFullName, newUsername, newPassword) => {
-  return async (dispatch) => {
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        console.error('Token is not available.')
-        dispatch(setLoading(false))
-        return
-      }
-
-      const formData = new FormData()
-      formData.append('full_name', newFullName)
-      formData.append('username', newUsername)
-      formData.append('password', newPassword)
-
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-      }
-      const response = await axios.put(`${apiurl}/user/${id}`, formData, config)
-
-      const putEntity = response.data
-      dispatch(setEntity(putEntity))
-      dispatch(setLoading(false))
-    } catch (error) {
-      throw new Error(error.response)
-    }
-  }
+export const updateEntity = (id, full_name, username, password) => async (dispatch) => {
+  const values = { full_name, username }
+  if (password) values.password = password
+  dispatch(setEntity(await updateItem(scope, id, values)))
 }

@@ -1,62 +1,28 @@
-import axios from 'axios'
+import { authenticate } from '../../Data/dummyApi'
 
-export const setLoading = (loading) => {
-  return {
-    type: 'user/SET_LOADING',
-    payload: loading,
-  }
-}
+export const setLoading = (payload) => ({ type: 'user/SET_LOADING', payload })
+export const setAlluser = (payload) => ({ type: 'user/ALL_USER', payload })
+export const setUser = (payload) => ({ type: 'user/SET_USER', payload })
+export const setError = (payload) => ({ type: 'user/SET_ERROR', payload })
 
-export const setAlluser = (allUser) => {
-  return {
-    type: 'user/ALL_USER',
-    payload: allUser,
-  }
-}
-
-export const setUser = (User) => {
-  return {
-    type: 'user/SET_USER',
-    payload: User,
-  }
-}
-
-export const setError = (error) => ({ type: 'user/SET_ERROR', payload: error })
-
-const apiurl = import.meta.env.VITE_API_URL
-
-export const Login = (username, password) => {
-  return async (dispatch) => {
-    dispatch(setLoading(true))
-    dispatch(setError(null))
-    try {
-      const res = await axios.post(`${apiurl}/login`, {
-        username,
-        password,
-      })
-      const loginUser = res.data
-      const token = loginUser.Authorization
-      const user = loginUser.username
-      localStorage.setItem('token', token)
-      localStorage.setItem('username', user)
-      dispatch(setUser(loginUser))
-      dispatch(setLoading(false))
-    } catch (error) {
-      dispatch(setLoading(false))
-      dispatch(setError('Username atau kata sandi tidak sesuai.'))
-      console.error('Login error:', error)
-      throw error
-    }
-  }
-}
-
-export const Logout = () => (dispatch) => {
+export const Login = (username, password) => async (dispatch) => {
+  dispatch(setLoading(true))
+  dispatch(setError(null))
   try {
-    localStorage.removeItem('token')
-    localStorage.removeItem('username')
-    dispatch(setUser({}))
-    window.location.href = '/admin'
+    const user = await authenticate(username, password)
+    localStorage.setItem('token', user.Authorization)
+    localStorage.setItem('username', user.username)
+    dispatch(setUser(user))
   } catch (error) {
-    console.error('Logout error:', error)
+    dispatch(setError('Username atau kata sandi tidak sesuai.'))
+    throw error
+  } finally {
+    dispatch(setLoading(false))
   }
+}
+export const Logout = () => (dispatch) => {
+  localStorage.removeItem('token')
+  localStorage.removeItem('username')
+  dispatch(setUser({}))
+  window.location.href = '/admin'
 }

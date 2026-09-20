@@ -13,7 +13,7 @@ function Dashboard() {
     <section className="admin-dashboard">
       <p className="admin-eyebrow">Ringkasan pengelolaan</p>
       <Title title="Pilih konten yang ingin diperbarui." />
-      <p className="admin-dashboard-intro">Perubahan pada modul konten akan diteruskan ke halaman publik melalui API perusahaan.</p>
+      <p className="admin-dashboard-intro">Mode dummy aktif. Perubahan disimpan secara lokal di browser ini dan langsung tampil pada halaman publik.</p>
       <div className="admin-module-list">{sections.map((item) => <Link key={item.to} to={item.to}><span>{item.index}</span><div><h2>{item.title}</h2><p>{item.text}</p></div><span className="material-symbols-outlined" aria-hidden="true">arrow_forward</span></Link>)}</div>
     </section>
   )
