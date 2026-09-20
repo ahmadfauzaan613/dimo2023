@@ -1,7 +1,5 @@
-import React from 'react'
-
-function Title(props) {
-  return <h2 className="font-bold text-[42px]">{props.title}</h2>
+function Title({ title }) {
+  return <h1 className="admin-page-title">{title}</h1>
 }
 
 export default Title

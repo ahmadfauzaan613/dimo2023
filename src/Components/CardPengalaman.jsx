@@ -1,18 +1,9 @@
-import React from 'react'
-
-function CardPengalaman(props) {
+function CardPengalaman({ gambar, judul, value }) {
   return (
-    <div key={props.key} class="bg-white rounded p-5 shadow">
-      <img src={props.gambar} class="rounded mx-auto " alt="" />
-      <div class="flex items-start mt-[3%] justify-between">
-        <div>
-          <p class="text-[16px] font-bold">{props.judul}</p>
-        </div>
-      </div>
-      <p class="mt-2 text-[16px]">
-        Project Value : <span class="font-bold">{props.value}</span>
-      </p>
-    </div>
+    <article className="experience-card">
+      <img src={gambar} alt={`Dokumentasi ${judul || 'proyek'}`} loading="lazy" />
+      <div><h2>{judul || 'Proyek konstruksi'}</h2>{value && <p><span>Nilai proyek</span>{value}</p>}</div>
+    </article>
   )
 }
 

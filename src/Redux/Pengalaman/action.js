@@ -1,56 +1,49 @@
 import axios from 'axios'
 
 export const RESET_FORM = 'RESET_FORM'
+const scope = 'pengalaman'
 
 export const setLoading = (loading) => {
   return {
-    type: 'SET_LOADING',
+    type: `${scope}/SET_LOADING`,
     payload: loading,
   }
 }
 
 export const allEntity = (allEntity) => {
   return {
-    type: 'ALL_ENTITY',
+    type: `${scope}/ALL_ENTITY`,
     payload: allEntity,
   }
 }
 
 export const setEntity = (entity) => {
   return {
-    type: 'SET_ENTITY',
+    type: `${scope}/SET_ENTITY`,
     payload: entity,
   }
 }
 
 export const resetForm = () => ({
-  type: RESET_FORM,
+  type: `${scope}/${RESET_FORM}`,
 })
 
-const apiurl = process.env.REACT_APP_API_URL
+export const setError = (error) => ({ type: `${scope}/SET_ERROR`, payload: error })
+
+const apiurl = import.meta.env.VITE_API_URL
 
 export const getAllPengalaman = () => {
   return async (dispatch) => {
+    dispatch(setLoading(true))
+    dispatch(setError(null))
     try {
-      // const token = localStorage.getItem('token')
-      // if (!token) {
-      //   console.error('Token is not available.')
-      //   dispatch(setLoading(false))
-      //   return
-      // }
-      // const config = {
-      //   headers: {
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      // }
-      // const res = await axios.get(`${apiurl}/pengalaman`, config)
       const res = await axios.get(`${apiurl}/pengalaman`)
       const dataPengalaman = res.data
       dispatch(allEntity(dataPengalaman))
       dispatch(setLoading(false))
-    } catch (error) {
+    } catch {
       dispatch(setLoading(false))
-      console.error('Error fetching penawaran data:', error)
+      dispatch(setError('Periksa koneksi Anda, lalu coba kembali.'))
     }
   }
 }

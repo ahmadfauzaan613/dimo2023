@@ -2,8 +2,8 @@ import React from 'react'
 
 function Loading() {
   return (
-    <div class="flex items-center justify-center h-screen">
-      <div class="lds-ring">
+    <div className="flex items-center justify-center h-screen" role="status" aria-label="Memuat data">
+      <div className="lds-ring" aria-hidden="true">
         <div></div>
         <div></div>
         <div></div>

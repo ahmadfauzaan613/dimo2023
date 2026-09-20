@@ -2,29 +2,33 @@ import axios from 'axios'
 
 export const setLoading = (loading) => {
   return {
-    type: 'SET_LOADING',
+    type: 'user/SET_LOADING',
     payload: loading,
   }
 }
 
 export const setAlluser = (allUser) => {
   return {
-    type: 'ALL_USER',
+    type: 'user/ALL_USER',
     payload: allUser,
   }
 }
 
 export const setUser = (User) => {
   return {
-    type: 'USER',
+    type: 'user/SET_USER',
     payload: User,
   }
 }
 
-const apiurl = process.env.REACT_APP_API_URL
+export const setError = (error) => ({ type: 'user/SET_ERROR', payload: error })
+
+const apiurl = import.meta.env.VITE_API_URL
 
 export const Login = (username, password) => {
   return async (dispatch) => {
+    dispatch(setLoading(true))
+    dispatch(setError(null))
     try {
       const res = await axios.post(`${apiurl}/login`, {
         username,
@@ -39,16 +43,18 @@ export const Login = (username, password) => {
       dispatch(setLoading(false))
     } catch (error) {
       dispatch(setLoading(false))
+      dispatch(setError('Username atau kata sandi tidak sesuai.'))
       console.error('Login error:', error)
+      throw error
     }
   }
 }
 
-export const Logout = () => {
+export const Logout = () => (dispatch) => {
   try {
     localStorage.removeItem('token')
     localStorage.removeItem('username')
-
+    dispatch(setUser({}))
     window.location.href = '/admin'
   } catch (error) {
     console.error('Logout error:', error)

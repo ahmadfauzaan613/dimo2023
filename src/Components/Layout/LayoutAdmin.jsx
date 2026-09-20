@@ -1,28 +1,21 @@
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
-import { useNavigate } from 'react-router-dom'
 
-function LayoutAdmin(props) {
+function LayoutAdmin({ children }) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    const token = localStorage.getItem('token')
-    if (!token) {
-      navigate('/admin')
-    }
+    if (!localStorage.getItem('token')) navigate('/admin')
   }, [navigate])
 
   return (
-    <div>
+    <div className="admin-shell">
       <Navbar />
-      <div className="grid grid-cols-12">
-        <div className="col-span-2">
-          <Sidebar />
-        </div>
-        <div className="col-span-10">
-          <div className="p-5 bg-white h-screen max-h-screen">{props.children}</div>
-        </div>
+      <div className="admin-body">
+        <Sidebar />
+        <main className="admin-content">{children}</main>
       </div>
     </div>
   )

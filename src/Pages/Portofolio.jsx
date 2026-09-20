@@ -1,24 +1,21 @@
-import React, { useEffect } from 'react'
-import TitlePage from '../Components/TitlePage'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import TitlePage from '../Components/TitlePage'
 import { getAllPortofolio } from '../Redux/Portofolio/action'
 
 function Portofolio() {
   const dispatch = useDispatch()
-  useEffect(() => {
-    dispatch(getAllPortofolio())
-  }, [dispatch])
+  const { allEntity, loading, error } = useSelector((state) => state.portofolio)
+  useEffect(() => { dispatch(getAllPortofolio()) }, [dispatch])
 
-  const { allEntity } = useSelector((state) => state.portofolio)
   return (
-    <div class="desktop3:px-[11%] desktop:px-[7%] desktop2:px-[7%] py-[2rem] phone:px-[5%] tablet:px-[5%] laptop:px-[8%]">
-      <TitlePage judul={'Portofolio'} />
-      <div className="grid desktop3:grid-cols-4 laptop:grid-cols-2 desktop:grid-cols-2 desktop2:grid-cols-3 gap-5">
-        {allEntity.map((item, i) => (
-          <img key={i} src={item.gambar} class="h-full rounded cursor-pointer" alt="" />
-        ))}
-      </div>
-    </div>
+    <section className="inner-page section-shell">
+      <TitlePage index="Portofolio / Dokumentasi" judul="Ruang, bangunan, dan pekerjaan lapangan." intro="Dokumentasi visual dari pekerjaan yang telah masuk ke dalam arsip PT Telaga Selat Samudra." />
+      {loading && <div className="data-state" role="status"><span className="loading-line" />Memuat dokumentasi…</div>}
+      {!loading && error && <div className="data-state data-error" role="alert"><strong>Portofolio belum dapat dimuat.</strong><span>{error}</span><button type="button" onClick={() => dispatch(getAllPortofolio())}>Coba lagi</button></div>}
+      {!loading && !error && allEntity.length === 0 && <div className="data-state"><strong>Dokumentasi belum tersedia.</strong><span>Silakan kembali lagi atau hubungi tim kami untuk melihat profil proyek.</span></div>}
+      {!loading && !error && allEntity.length > 0 && <div className="portfolio-grid">{allEntity.map((item, index) => <figure key={item.id || item.gambar} className={index % 5 === 0 ? 'portfolio-wide' : ''}><img src={item.gambar} alt={item.nama_portofolio || `Dokumentasi proyek ${index + 1}`} loading="lazy" />{item.nama_portofolio && <figcaption>{item.nama_portofolio}</figcaption>}</figure>)}</div>}
+    </section>
   )
 }
 

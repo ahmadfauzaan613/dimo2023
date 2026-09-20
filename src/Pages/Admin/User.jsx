@@ -153,9 +153,9 @@ function User() {
                   <p className="pb-1">Username:</p>
                   <input type="text" name="text" id="text" placeholder="Searh" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-70 outline-none px-3 py-[5px] border rounded-md" />
                 </div>
-                <p onClick={resetFilter} className="text-red-600 cursor-pointer hover:font-bold">
+                <button type="button" onClick={resetFilter} className="text-red-700 cursor-pointer hover:font-bold min-h-11">
                   Reset Filter
-                </p>
+                </button>
               </div>
               <div className="border rounded-md mt-4 overflow-y-scroll max-h-screen h-[630px]">
                 <table className="w-full text-left ">
@@ -227,9 +227,7 @@ function User() {
       <Modal isOpen={modalAddData} onRequestClose={buttonModal} style={customStyles2} contentLabel="Add Modal">
         <div className="border-b flex items-center justify-between pb-4">
           <h3 className="text-[20px] uppercase font-bold">Add Data</h3>
-          <span onClick={buttonModal} className="material-symbols-outlined cursor-pointer">
-            close
-          </span>
+          <button type="button" onClick={buttonModal} aria-label="Tutup modal tambah" className="modal-close material-symbols-outlined">close</button>
         </div>
         <form action="" onSubmit={handleSubmit(onAddData)} className="pt-5 space-y-4">
           <div>
@@ -257,9 +255,7 @@ function User() {
       <Modal isOpen={modalShowData} onRequestClose={buttonShow} style={customStyles} contentLabel="Delete Modal">
         <div className="border-b flex items-center justify-between pb-4">
           <h3 className="text-[20px] uppercase font-bold">Show Data</h3>
-          <span onClick={buttonShow} className="material-symbols-outlined cursor-pointer">
-            close
-          </span>
+          <button type="button" onClick={buttonShow} aria-label="Tutup detail" className="modal-close material-symbols-outlined">close</button>
         </div>
         <div className=" mt-3 space-y-4">
           <DetailData data={dataObj.username} label={'Username'} />
@@ -279,9 +275,7 @@ function User() {
       <Modal isOpen={modalUpdateData} onRequestClose={buttonUpdate} style={customStyles2} contentLabel="Delete Modal">
         <div className="border-b flex items-center justify-between pb-4">
           <h3 className="text-[20px] uppercase font-bold">Update Data</h3>
-          <span onClick={buttonUpdate} className="material-symbols-outlined cursor-pointer">
-            close
-          </span>
+          <button type="button" onClick={buttonUpdate} aria-label="Tutup modal pembaruan" className="modal-close material-symbols-outlined">close</button>
         </div>
         <form action="" onSubmit={handleSubmit(onUpdate)} className="pt-5 space-y-4">
           <div>

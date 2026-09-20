@@ -1,33 +1,34 @@
 import axios from 'axios'
 
 export const RESET_FORM = 'RESET_FORM'
+const scope = 'pengguna'
 
 export const setLoading = (loading) => {
   return {
-    type: 'SET_LOADING',
+    type: `${scope}/SET_LOADING`,
     payload: loading,
   }
 }
 
 export const allEntity = (allEntity) => {
   return {
-    type: 'ALL_ENTITY',
+    type: `${scope}/ALL_ENTITY`,
     payload: allEntity,
   }
 }
 
 export const setEntity = (entity) => {
   return {
-    type: 'SET_ENTITY',
+    type: `${scope}/SET_ENTITY`,
     payload: entity,
   }
 }
 
 export const resetForm = () => ({
-  type: RESET_FORM,
+  type: `${scope}/${RESET_FORM}`,
 })
 
-const apiurl = process.env.REACT_APP_API_URL
+const apiurl = import.meta.env.VITE_API_URL
 
 export const getAllUser = () => {
   return async (dispatch) => {

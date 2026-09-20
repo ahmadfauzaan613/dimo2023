@@ -1,58 +1,56 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useForm } from 'react-hook-form'
-import { Login } from '../../Redux/User/action'
-
-// IMG
-import BgLogin from '../../Images/background-1.jpg'
 import { useNavigate } from 'react-router-dom'
+import { Login } from '../../Redux/User/action'
+import BgLogin from '../../Images/background-1.jpg'
+import Logo from '../../Images/Logo.png'
 
 function LoginPages() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const { register, handleSubmit, setValue, reset } = useForm()
+  const { loading, error } = useSelector((state) => state.user)
+  const [showPassword, setShowPassword] = useState(false)
+  const { register, handleSubmit, formState: { errors } } = useForm()
 
-  const onSubmit = async ({ name, password }) => {
+  const onSubmit = async ({ username, password }) => {
     try {
-      await dispatch(Login(name, password))
-      reset()
+      await dispatch(Login(username, password))
       navigate('/admin/dashboard')
-    } catch (error) {
-      throw new Error(error)
+    } catch {
+      // Pesan kesalahan ditampilkan dari state autentikasi.
     }
   }
 
-  const [showPass, setShowPass] = useState(false)
-  const buttonShowPass = () => {
-    setShowPass(!showPass)
-  }
-
   return (
-    <div>
-      <div className="grid grid-cols-12">
-        <div className="col-span-8">
-          <img src={BgLogin} alt="" className="w-full h-full" />
+    <main className="admin-login">
+      <section className="admin-login-visual" aria-label="PT Telaga Selat Samudra">
+        <img src={BgLogin} alt="Bangunan bertingkat dengan fasad geometris" />
+        <div><p>Ruang administrasi</p><h1>Kelola materi website dalam satu tempat.</h1></div>
+      </section>
+      <section className="admin-login-panel">
+        <div className="admin-login-form">
+          <img className="admin-login-logo" src={Logo} alt="Logo PT Telaga Selat Samudra" />
+          <p className="section-index">Panel internal</p>
+          <h2>Masuk ke dashboard</h2>
+          <p className="admin-login-intro">Gunakan akun yang telah diberikan administrator.</p>
+          {error && <p className="form-error" role="alert">{error}</p>}
+          <form onSubmit={handleSubmit(onSubmit)} noValidate>
+            <label htmlFor="username">Username</label>
+            <input id="username" autoComplete="username" {...register('username', { required: 'Username wajib diisi.' })} aria-invalid={Boolean(errors.username)} />
+            {errors.username && <span className="field-error">{errors.username.message}</span>}
+            <label htmlFor="password">Kata sandi</label>
+            <div className="password-field">
+              <input id="password" type={showPassword ? 'text' : 'password'} autoComplete="current-password" {...register('password', { required: 'Kata sandi wajib diisi.' })} aria-invalid={Boolean(errors.password)} />
+              <button type="button" onClick={() => setShowPassword((value) => !value)} aria-label={showPassword ? 'Sembunyikan kata sandi' : 'Tampilkan kata sandi'}>{showPassword ? 'Sembunyikan' : 'Lihat'}</button>
+            </div>
+            {errors.password && <span className="field-error">{errors.password.message}</span>}
+            <button className="admin-login-submit" type="submit" disabled={loading}>{loading ? 'Memeriksa akun…' : 'Masuk'}</button>
+          </form>
+          <a className="admin-back-link" href="/">Kembali ke website</a>
         </div>
-        <div className="col-span-4 bg-[#031E33] px-[5%] ">
-          <div className="mt-[50%]">
-            <h4 className="font-bold text-center mb-3 text-[38px] uppercase text-white">Admin</h4>
-            {/* <p className="text-center text-red-600 font-bold mb-3  uppercase text-[18px]">Wrong username and password</p> */}
-            <form action="" onSubmit={handleSubmit(onSubmit)} className="grid  gap-y-4 mt-3">
-              <input type="text" {...register('name')} onChange={(e) => setValue('name', e.target.value)} className="p-2 rounded-md outline-none" autoComplete="off" placeholder="Username" />
-              <div className="flex items-center">
-                <input type={!showPass ? 'password' : 'text'} {...register('password')} onChange={(e) => setValue('password', e.target.value)} className="p-2 rounded-l-md w-full outline-none" autoComplete="off" placeholder="Password" />
-                <button type="button" onClick={buttonShowPass} className="outline-none border rounded-r-md  bg-slate-300 ">
-                  <span className="material-symbols-outlined px-2 py-[6.9px]  m-0 text-black">{showPass ? 'Visibility' : 'visibility_off'}</span>
-                </button>
-              </div>
-              <button type="submit" className="bg-[#EAB200] font-bold text-white rounded-md uppercase py-2">
-                Login
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+      </section>
+    </main>
   )
 }
 

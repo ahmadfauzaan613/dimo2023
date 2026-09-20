@@ -1,42 +1,39 @@
-import React, { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import { Logout } from '../../Redux/User/action'
-import { useNavigate } from 'react-router-dom'
+import Logo from '../../Images/Logo.png'
 
 function Navbar() {
-  const username = localStorage.getItem('username')
+  const [open, setOpen] = useState(false)
+  const menuRef = useRef(null)
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [dropdown, setDropdown] = useState(false)
-  const buttonDropdown = () => {
-    setDropdown(!dropdown)
-  }
+  const username = localStorage.getItem('username') || 'Administrator'
+
+  useEffect(() => {
+    const close = (event) => {
+      if (event.key === 'Escape') setOpen(false)
+      if (menuRef.current && !menuRef.current.contains(event.target)) setOpen(false)
+    }
+    document.addEventListener('keydown', close)
+    document.addEventListener('mousedown', close)
+    return () => { document.removeEventListener('keydown', close); document.removeEventListener('mousedown', close) }
+  }, [])
 
   const onLogout = () => {
-    try {
-      dispatch(Logout())
-      navigate('/admin')
-    } catch (error) {
-      console.error('Logout error:', error)
-    }
+    dispatch(Logout())
+    navigate('/admin')
   }
 
   return (
-    <div className="px-3 py-5 bg-[#031E33] flex items-center justify-between">
-      <p className="text-white text-[24px] font-bold">PT. Telaga Selat Samudra</p>
-      <div onClick={buttonDropdown} className="flex items-center gap-2 pr-7 cursor-pointer">
-        <span className="material-symbols-outlined text-white">person</span>
-        <p className="text-white">{username}</p>
+    <header className="admin-topbar">
+      <Link className="admin-brand" to="/admin/dashboard"><img src={Logo} alt="" /><span><strong>Telaga Selat Samudra</strong><small>Content management</small></span></Link>
+      <div className="admin-account" ref={menuRef}>
+        <button type="button" aria-expanded={open} aria-haspopup="menu" onClick={() => setOpen((value) => !value)}><span className="material-symbols-outlined" aria-hidden="true">account_circle</span>{username}<span className="material-symbols-outlined" aria-hidden="true">expand_more</span></button>
+        {open && <div className="admin-account-menu" role="menu"><Link to="/" role="menuitem">Buka website</Link><button type="button" role="menuitem" onClick={onLogout}>Keluar</button></div>}
       </div>
-      {dropdown && (
-        <div className="absolute bg-[#EAB200]  w-[8vw] rounded-md p-3 right-10 top-16">
-          <div onClick={onLogout} className="flex items-center justify-between cursor-pointer">
-            <p className=" text-white font-bold">Logout</p>
-            <span className="material-symbols-outlined text-white">logout</span>
-          </div>
-        </div>
-      )}
-    </div>
+    </header>
   )
 }
 

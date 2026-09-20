@@ -149,9 +149,9 @@ function Portofolio() {
                   <p className="pb-1">Nama Portofolio:</p>
                   <input type="text" name="text" id="text" placeholder="Search" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} className="w-70 outline-none px-3 py-[5px] border rounded-md" />
                 </div>
-                <p onClick={resetFilter} className="text-red-600 cursor-pointer hover:font-bold">
+                <button type="button" onClick={resetFilter} className="text-red-700 cursor-pointer hover:font-bold min-h-11">
                   Reset Filter
-                </p>
+                </button>
               </div>
               <div className="border rounded-md mt-4 overflow-y-scroll max-h-screen h-[630px]">
                 <table className="w-full text-left ">
@@ -171,7 +171,7 @@ function Portofolio() {
                           <td className=" p-3">{i + 1}</td>
                           <td>{item.nama_portofolio}</td>
                           <td className="py-2">
-                            <img src={item.gambar} alt="" className="w-[150px] h-full overflow-hidden" />
+                            <img src={item.gambar} alt={`Dokumentasi ${item.nama_portofolio || 'portofolio'}`} className="w-[150px] h-full overflow-hidden" />
                           </td>
                           <td>
                             <div className="flex items-center gap-2">
@@ -220,9 +220,7 @@ function Portofolio() {
       <Modal isOpen={modalAddData} onRequestClose={buttonModal} style={customStyles2} contentLabel="Add Modal">
         <div className="border-b flex items-center justify-between pb-4">
           <h3 className="text-[20px] uppercase font-bold">Add Data</h3>
-          <span onClick={buttonModal} className="material-symbols-outlined cursor-pointer">
-            close
-          </span>
+          <button type="button" onClick={buttonModal} aria-label="Tutup modal tambah" className="modal-close material-symbols-outlined">close</button>
         </div>
         <form action="" onSubmit={handleSubmit(onAddData)} className="pt-5 space-y-4">
           <div>
@@ -241,12 +239,10 @@ function Portofolio() {
       <Modal isOpen={modalShowData} onRequestClose={buttonShow} style={customStyles} contentLabel="Delete Modal">
         <div className="border-b flex items-center justify-between pb-4">
           <h3 className="text-[20px] uppercase font-bold">Show Data</h3>
-          <span onClick={buttonShow} className="material-symbols-outlined cursor-pointer">
-            close
-          </span>
+          <button type="button" onClick={buttonShow} aria-label="Tutup detail" className="modal-close material-symbols-outlined">close</button>
         </div>
         <div className="w-full h-full flex justify-center overflow-hidden mt-4">
-          <img src={dataObj.gambar} alt="" className="h-[40vh]" />
+          <img src={dataObj.gambar} alt={`Dokumentasi ${dataObj.nama_portofolio || 'portofolio'}`} className="h-[40vh]" />
         </div>
         <div className=" mt-3 space-y-4">
           <DetailData data={dataObj.nama_portofolio} label={'Nama Rumah'} />
@@ -266,13 +262,11 @@ function Portofolio() {
       <Modal isOpen={modalUpdateData} onRequestClose={buttonUpdate} style={customStyles2} contentLabel="Delete Modal">
         <div className="border-b flex items-center justify-between pb-4">
           <h3 className="text-[20px] uppercase font-bold">Update Data</h3>
-          <span onClick={buttonUpdate} className="material-symbols-outlined cursor-pointer">
-            close
-          </span>
+          <button type="button" onClick={buttonUpdate} aria-label="Tutup modal pembaruan" className="modal-close material-symbols-outlined">close</button>
         </div>
         <form action="" onSubmit={handleSubmit(onUpdate)} className="pt-5 space-y-4">
           <div className="flex items-center gap-3">
-            <img src={dataObj.gambar} alt="" className="w-[350px] h-full overflow-hidden" />
+            <img src={dataObj.gambar} alt={`Dokumentasi ${dataObj.nama_portofolio || 'portofolio'}`} className="w-[350px] h-full overflow-hidden" />
             <div>
               <p className="pb-2 font-bold">Upload Gambar:</p>
               <input type="file" name="file" {...register('newgambar')} id="file" className="border w-full p-1 rounded-md outline-none" accept="image/*" />
